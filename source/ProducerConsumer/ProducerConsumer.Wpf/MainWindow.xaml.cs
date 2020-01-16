@@ -14,7 +14,7 @@ namespace ProducerConsumer.Wpf
     {
         private Producer _producer;
         private Consumer _consumer;
-        private Queue<Task> _queue;
+        private List<Task> _taskList;
 
         public MainWindow()
         {
@@ -31,14 +31,45 @@ namespace ProducerConsumer.Wpf
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
             TextBlockLog.Text = "";
-            _queue=new Queue<Task>();
+            _taskList = new List<Task>();
             int min = Convert.ToInt32(TextBoxProducerMinimum.Text);
             int max = Convert.ToInt32(TextBoxProducerMaximum.Text);
-            //_producer = new Producer(min, max, LogTask, _queue);
+            _producer = new Producer(min, max);
             min = Convert.ToInt32(TextBoxConsumerMinimum.Text);
             max = Convert.ToInt32(TextBoxConsumerMaximum.Text);
-            //_consumer = new Consumer(min, max, _queue);
-            CheckBoxIsRunning.IsChecked = true;
+            _consumer = new Consumer(min, max, 2);
+            _producer.NewTaskProduced += Producer_NewTaskProduced;
+            _consumer.LookForNewTask += Consumer_LookForNewTask;
+            if (CheckBoxIsRunning.IsChecked == true)
+            {
+                CheckBoxIsRunning.IsChecked = false;
+                _producer.NewTaskProduced -= Producer_NewTaskProduced;
+                _consumer.LookForNewTask -= Consumer_LookForNewTask;
+                System.GC.Collect();
+            }
+            else
+            {
+                CheckBoxIsRunning.IsChecked = true;
+            }
+
+            FastClock.Instance.IsRunning = CheckBoxIsRunning.IsChecked == true;
+        }
+        private void Consumer_LookForNewTask(object sender, int minutesToFinish)
+        {
+            if (_taskList.Count == 0)
+            {
+                AddLineToTextBox($"FAIL - KEIN TASK IN DER LISTE!!!");
+            }
+            else
+            {
+                AddLineToTextBox($"Consum von Task {_taskList[_taskList.Count - 1].TaskNumber} wird gestartet!");
+                _taskList.RemoveAt(_taskList.Count - 1);
+            }
+        }
+        private void Producer_NewTaskProduced(object sender, Task newTask)
+        {
+            _taskList.Add(newTask);
+            AddLineToTextBox($"{newTask.CreationTime} - Neuer Task hinzugefügt! | Anzahl Tasks = {_taskList.Count} | Task Nummer = {newTask.TaskNumber}");
         }
 
         /// <summary>
@@ -54,9 +85,10 @@ namespace ProducerConsumer.Wpf
             text.Append(line + "\n");
             TextBlockLog.Text = text.ToString();
         }
-
         private void CheckBoxIsRunning_Click(object sender, RoutedEventArgs e)
         {
+            FastClock.Instance.Factor = 1000;
+            FastClock.Instance.IsRunning = CheckBoxIsRunning.IsChecked == true;
         }
     }
 }

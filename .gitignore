@@ -3,3 +3,7 @@
 ################################################################################
 
 /source/ProducerConsumer/.vs/ProducerConsumer/v16/Server/sqlite3
+/.vs
+/source/ProducerConsumer/packages/MahApps.Metro.1.4.1
+/source/ProducerConsumer/ProducerConsumer.Wpf/bin/Debug
+/source/ProducerConsumer/.vs/ProducerConsumer/v16

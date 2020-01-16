@@ -1,0 +1,5 @@
+C:\Users\migu\Source\Repos\csharp_samples_events_producerconsumer-template\source\ProducerConsumer\ProducerConsumer.Core\bin\Debug\ProducerConsumer.Core.dll
+C:\Users\migu\Source\Repos\csharp_samples_events_producerconsumer-template\source\ProducerConsumer\ProducerConsumer.Core\bin\Debug\ProducerConsumer.Core.pdb
+C:\Users\migu\Source\Repos\csharp_samples_events_producerconsumer-template\source\ProducerConsumer\ProducerConsumer.Core\obj\Debug\ProducerConsumer.Core.csprojAssemblyReference.cache
+C:\Users\migu\Source\Repos\csharp_samples_events_producerconsumer-template\source\ProducerConsumer\ProducerConsumer.Core\obj\Debug\ProducerConsumer.Core.dll
+C:\Users\migu\Source\Repos\csharp_samples_events_producerconsumer-template\source\ProducerConsumer\ProducerConsumer.Core\obj\Debug\ProducerConsumer.Core.pdb

@@ -6,6 +6,10 @@ namespace ProducerConsumer.Core
     public class FastClock
     {
         private static FastClock _instance;
+        private DateTime _time;
+        private readonly DispatcherTimer _timer;
+        private bool _isRunning;
+
 
         public static FastClock Instance
         {
@@ -18,18 +22,7 @@ namespace ProducerConsumer.Core
                 return _instance;
             }
         }
-        private FastClock()
-        {
-            Time = DateTime.Now;
-            Factor = 60;
-            _timer = new DispatcherTimer();
-            _timer.Tick += Timer_Tick;
-        }
-
-        public event EventHandler<DateTime> OneMinuteIsOver;
-
         public DateTime StartTime { get; private set; }
-
         public DateTime Time
         {
             get { return _time; }
@@ -39,9 +32,7 @@ namespace ProducerConsumer.Core
                 StartTime = value;
             }
         }
-
         public int Factor { get; set; }
-
         public bool IsRunning
         {
             get { return _isRunning; }
@@ -60,16 +51,21 @@ namespace ProducerConsumer.Core
             }
         }
 
-        private readonly DispatcherTimer _timer;
-        private bool _isRunning;
-        private DateTime _time;
+        public event EventHandler<DateTime> OneMinuteIsOver;
+
+        private FastClock()
+        {
+            Time = DateTime.Now;
+            Factor = 60;
+            _timer = new DispatcherTimer();
+            _timer.Tick += Timer_Tick;
+        }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
             Time = Time.AddMinutes(1);
             OnOneMinuteIsOver(Time);
         }
-
         protected virtual void OnOneMinuteIsOver(DateTime fastClockTime)
         {
             OneMinuteIsOver?.Invoke(this, fastClockTime);
